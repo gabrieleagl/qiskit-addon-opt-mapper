@@ -26,6 +26,7 @@ from .base_optimization_problem import (  # noqa: F401
     QuadraticCoeffLike,
 )
 from .constraint import ConstraintSense  # noqa: F401
+from .linear_expression import Representation
 from .optimization_objective import ObjSense, OptimizationObjective
 from .variable import Variable, VarType  # noqa: F401
 
@@ -58,6 +59,8 @@ class OptimizationProblem(BaseOptimizationProblem):
         quadratic: QuadraticCoeffLike | None = None,
         higher_order: HigherOrderCoeffLike | None = None,
         name: str = "",
+        linear_representation: Representation = Representation.DENSE,
+        quadratic_representation: Representation = Representation.DENSE,
     ) -> None:
         """Sets an objective to be minimized.
 
@@ -68,6 +71,8 @@ class OptimizationProblem(BaseOptimizationProblem):
             higher_order: A dictionary of {order: coeffs} for multiple orders (k>=3).
             name: The name of the objective function. The default empty string leaves the
                 objective unnamed.
+            linear_representation: The internal storage representation of ``linear``.
+            quadratic_representation: The internal storage representation of ``quadratic``.
         """
         if name:
             self._check_name(name, "Objective")
@@ -78,6 +83,8 @@ class OptimizationProblem(BaseOptimizationProblem):
             quadratic=quadratic,
             higher_order=higher_order,
             name=name,
+            linear_representation=linear_representation,
+            quadratic_representation=quadratic_representation,
         )
 
     def maximize(
@@ -87,6 +94,8 @@ class OptimizationProblem(BaseOptimizationProblem):
         quadratic: QuadraticCoeffLike | None = None,
         higher_order: HigherOrderCoeffLike | None = None,
         name: str = "",
+        linear_representation: Representation = Representation.DENSE,
+        quadratic_representation: Representation = Representation.DENSE,
     ) -> None:
         """Sets an objective to be maximized.
 
@@ -97,6 +106,8 @@ class OptimizationProblem(BaseOptimizationProblem):
             higher_order: A dictionary of {order: coeffs} for multiple orders (k>=3).
             name: The name of the objective function. The default empty string leaves the
                 objective unnamed.
+            linear_representation: The internal storage representation of ``linear``.
+            quadratic_representation: The internal storage representation of ``quadratic``.
         """
         if name:
             self._check_name(name, "Objective")
@@ -107,6 +118,8 @@ class OptimizationProblem(BaseOptimizationProblem):
             quadratic=quadratic,
             higher_order=higher_order,
             name=name,
+            linear_representation=linear_representation,
+            quadratic_representation=quadratic_representation,
         )
 
     def to_ising(self) -> tuple[SparsePauliOp, float]:
@@ -216,6 +229,8 @@ class OptimizationProblem(BaseOptimizationProblem):
         quadratic: QuadraticCoeffLike | None = None,
         higher_order: HigherOrderCoeffLike | None = None,
         name: str = "",
+        linear_representation: Representation = Representation.DENSE,
+        quadratic_representation: Representation = Representation.DENSE,
     ) -> None:
         """Sets the single objective from its already-assembled parts.
 
@@ -229,6 +244,8 @@ class OptimizationProblem(BaseOptimizationProblem):
             quadratic: The coefficients of the quadratic part.
             higher_order: A dictionary of ``{order: coeffs}`` for the higher-order part.
             name: The name of the objective. The default empty string leaves it unnamed.
+            linear_representation: The internal storage representation of ``linear``.
+            quadratic_representation: The internal storage representation of ``quadratic``.
         """
         self._objective = OptimizationObjective(
             self,
@@ -238,4 +255,6 @@ class OptimizationProblem(BaseOptimizationProblem):
             sense=sense,
             higher_order=higher_order,
             name=name,
+            linear_representation=linear_representation,
+            quadratic_representation=quadratic_representation,
         )
